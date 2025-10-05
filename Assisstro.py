@@ -37,10 +37,9 @@ for message in st.session_state.messages:
 
 if user_input := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": user_input})
-    # with st.chat_message("user"):
-        # st.markdown(user_input)
+    with st.chat_message("user"):
+        st.markdown(user_input)
     bot_reply = perplexity_chatbot(user_input, st.session_state.messages)
     with st.chat_message("assistant"):
-        response = st.write_stream(bot_reply)
-    st.session_state.chat_history.append({"role": "assistant", "content": bot_reply})
-    # st.rerun()  # updated rerun method
+        response = st.write(bot_reply)
+    st.session_state.messages.append({"role": "assistant", "content": bot_reply})
