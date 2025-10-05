@@ -31,6 +31,7 @@ offer = gr.ChatInterface(
     fn = perplexity_chatbot,
     type="messages"
 )
-# port = int(os.environ.get("PORT", 7861))
-offer.launch(server_name="0.0.0.0", server_port=7861, share=False)
+port = int(os.environ.get("PORT", 7861))  #dynamic port 
+offer.launch(server_name="0.0.0.0", server_port=port, share=False)
+
 
