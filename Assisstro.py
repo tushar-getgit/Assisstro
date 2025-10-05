@@ -1,6 +1,6 @@
 import requests
 import gradio as gr
-import os
+import socket
 import streamlit as st
 
 API_KEY = st.secrets["api_keys"]["API_KEY"]
@@ -8,7 +8,7 @@ API_URL = st.secrets["api_keys"]["API_URL"]
 
 his = []
 def perplexity_chatbot(query,history):
-    messages = [{"role": "user", "content": "Act like a assistant. Reply in consise and minimum words."+query}]
+    messages = [{"role": "user", "content": "Act like a Astrologer who is expert in Numerology and astrology. Reply in consise and minimum words."+query}]
     his.append( messages[0])
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -31,7 +31,13 @@ offer = gr.ChatInterface(
     fn = perplexity_chatbot,
     type="messages"
 )
-port = int(os.environ.get("PORT", 7861))  #dynamic port 
-offer.launch(server_name="0.0.0.0", server_port=port, share=False)
 
+# port = int(os.environ.get("PORT", 7861))
+# port = int(os.environ.get("GRADIO_SERVER_PORT"))
+def get_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))  # Binds to a free random port assigned by OS
+        return s.getsockname()[1]
 
+port = get_free_port()
+offer.launch(server_name="0.0.0.0", server_port=port, share=True)
