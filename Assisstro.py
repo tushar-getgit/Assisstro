@@ -7,7 +7,8 @@ API_URL = st.secrets["api_keys"]["API_URL"]
 
 his = []
 def perplexity_chatbot(query,history):
-    messages = [{"role": "user", "content": "Act like a Astrologer who is expert in Numerology and astrology. Reply in consise and minimum words."+query}]
+    messages = [{"role": "user", "content": "Act like a Astrologer who is expert in Numerology and astrology.\
+    Reply in consise and minimum words and do not repeat that you are Astrologer or Numerology. Be very professional."+query}]
     his.append( messages[0])
     headers = {
         "Authorization": f"Bearer {API_KEY}",
@@ -43,3 +44,4 @@ if user_input := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         response = st.write(bot_reply)
     st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+
