@@ -1,11 +1,10 @@
 import requests
 import gradio as gr
 import os
-from dotenv import load_dotenv
+import streamlit as st
 
-load_dotenv() 
-API_KEY = os.getenv("API_KEY")
-API_URL = os.getenv("API_URL")
+API_KEY = st.secrets["api_keys"]["API_KEY"]
+API_URL = st.secrets["api_keys"]["API_URL"]
 
 his = []
 def perplexity_chatbot(query,history):
@@ -33,4 +32,4 @@ offer = gr.ChatInterface(
     type="messages"
 )
 port = int(os.environ.get("PORT", 7861))
-offer.launch(server_name="0.0.0.0", server_port=port, share=False)
+offer.launch(server_name="127.0.0.1", server_port=7861, share=False)
