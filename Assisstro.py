@@ -30,13 +30,15 @@ def perplexity_chatbot(query,history):
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
-
+    
+st.title("*** ASSISSTRO - AI ***")
+st.markdown("""I am a AI assistant for all your astrology needs.""")
 # Display the existing chat messages via `st.chat_message`.
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if user_input := st.chat_input("What is up?"):
+if user_input := st.chat_input("What is your query?"):
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("user"):
         st.markdown(user_input)
@@ -44,4 +46,5 @@ if user_input := st.chat_input("What is up?"):
     with st.chat_message("assistant"):
         response = st.write(bot_reply)
     st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+
 
