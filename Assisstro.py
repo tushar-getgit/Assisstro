@@ -1,6 +1,5 @@
 import requests
 import gradio as gr
-import socket
 import streamlit as st
 
 API_KEY = st.secrets["api_keys"]["API_KEY"]
@@ -27,17 +26,21 @@ def perplexity_chatbot(query,history):
         return assistant_reply
     else:
         return f"Error: {response.status_code} - {response.text}"
-offer = gr.ChatInterface(
-    fn = perplexity_chatbot,
-    type="messages"
-)
 
-# port = int(os.environ.get("PORT", 7861))
-# port = int(os.environ.get("GRADIO_SERVER_PORT"))
-def get_free_port():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(('', 0))  # Binds to a free random port assigned by OS
-        return s.getsockname()[1]
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-port = get_free_port()
-offer.launch(server_name="0.0.0.0", server_port=port, share=True)
+# Display the existing chat messages via `st.chat_message`.
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if user_input := st.chat_input("What is up?"):
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    # with st.chat_message("user"):
+        # st.markdown(user_input)
+    bot_reply = perplexity_chatbot(user_input, st.session_state.messages)
+    with st.chat_message("assistant"):
+        response = st.write_stream(bot_reply)
+    st.session_state.chat_history.append({"role": "assistant", "content": bot_reply})
+    # st.rerun()  # updated rerun method
